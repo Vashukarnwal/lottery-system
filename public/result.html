@@ -49,47 +49,38 @@
 <div class="box">
   <h2>Live Result</h2>
 
-  <input type="text" id="num" placeholder="Enter your number" />
-  <button onclick="checkResult()">Check Result</button>
+  <input type="text" id="userNumber" placeholder="Enter your number">
+<button onclick="checkResult()">Check Result</button>
+<p id="result"></p>
 
-  <p id="msg"></p>
+
 </div>
 
 <script>
-  async function checkResult() {
-    const number = document.getElementById("num").value;
-    const msg = document.getElementById("msg");
+function checkResult() {
+  const userNumber = document.getElementById("userNumber").value.trim();
 
-    if (!number) {
-      msg.innerText = "Please enter number";
-      msg.style.color = "red";
-      return;
-    }
-
-    try {
-      const res = await fetch("/check", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({ number })
-      });
-
-      const data = await res.json();
-
-      if (data.winner) {
-        window.location.href = "/won.html";
-      } else {
-        msg.innerText = "❌ Not a winner";
-        msg.style.color = "red";
+  fetch("/get-result")
+    .then(res => res.json())
+    .then(data => {
+      if (!data.winner) {
+        document.getElementById("result").innerText = "Result not declared yet";
+        return;
       }
 
-    } catch (err) {
-      msg.innerText = "Server error";
-      msg.style.color = "red";
-    }
-  }
+      // IMPORTANT: string comparison
+      if (String(userNumber) === String(data.winner)) {
+        window.location.href = "/won.html";
+      } else {
+        document.getElementById("result").innerText = "❌ Not a Winner";
+      }
+    })
+    .catch(() => {
+      document.getElementById("result").innerText = "Server error";
+    });
+}
 </script>
+
 
 </body>
 </html>
