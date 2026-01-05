@@ -1,21 +1,17 @@
 function checkResult() {
   const number = document.getElementById("number").value.trim();
 
-  if (!number) {
-    alert("❌ Enter your number");
-    return;
-  }
-
-  fetch(`/api/check/${number}`)
+  fetch("/api/check", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ number })
+  })
     .then(res => res.json())
     .then(data => {
       if (data.winner) {
-        window.location.href = "/won.html";
+        window.location.href = "won.html";
       } else {
-        alert("❌ Not a Winner");
+        alert("❌ Not a winner");
       }
-    })
-    .catch(() => {
-      alert("❌ Server Error");
     });
 }

@@ -2,27 +2,19 @@ function addWinner() {
   const number = document.getElementById("winner").value.trim();
 
   if (!number) {
-    alert("❌ Number required");
+    alert("Enter number");
     return;
   }
 
   fetch("/api/add-winner", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ number })
   })
     .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("✅ Winner Added Successfully");
-        document.getElementById("winner").value = "";
-      } else {
-        alert("❌ Failed to add winner");
-      }
+    .then(() => {
+      alert("✅ Winner Added");
+      document.getElementById("winner").value = "";
     })
-    .catch(() => {
-      alert("❌ Server Error");
-    });
+    .catch(() => alert("❌ Server error"));
 }

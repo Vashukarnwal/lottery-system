@@ -4,56 +4,68 @@ const path = require("path");
 
 const app = express();
 
+// middleware
 app.use(express.json());
 app.use(express.static("public"));
 
-const DATA_FILE = path.join(__dirname, "result.json");
+const DATA_FILE = "result.json";
 
-/* ---------- helper functions ---------- */
-function readWinner() {
+// ---------- helpers ----------
+function readData() {
   if (!fs.existsSync(DATA_FILE)) {
-    return { winner: null };
+    fs.writeFileSync(DATA_FILE, JSON.stringify({ winners: [] }));
   }
-  return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+  return JSON.parse(fs.readFileSync(DATA_FILE));
 }
 
-function saveWinner(number) {
-  fs.writeFileSync(DATA_FILE, JSON.stringify({ winner: number }, null, 2));
+function writeData(data) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
-/* ---------- API ROUTES ---------- */
+// ---------- ROUTES ----------
 
-// ✅ ADD WINNER (ADMIN)
+// admin add winner
 app.post("/api/add-winner", (req, res) => {
+  console.log("BODY:", req.body);
+
   const { number } = req.body;
 
   if (!number) {
-    return res.status(400).json({ success: false, message: "No number" });
+    return res.status(400).json({ success: false });
   }
 
-  saveWinner(number);
-  console.log("Winner saved:", number);
+  const data = readData();
 
+  if (!data.winners.includes(number)) {
+    data.winners.push(number);
+    writeData(data);
+  }
+
+  console.log("✅ Winner saved:", number);
   res.json({ success: true });
 });
 
-// ✅ CHECK RESULT (USER)
-app.get("/api/check/:number", (req, res) => {
-  const userNumber = req.params.number;
-  const data = readWinner();
+// check result
+app.post("/api/check", (req, res) => {
+  const { number } = req.body;
 
-  res.json({
-    winner: data.winner === userNumber
-  });
+  const data = readData();
+  const win = data.winners.includes(number);
+
+  res.json({ winner: win });
 });
 
-// ✅ ADMIN PAGE ROUTE
+// pages
 app.get("/admin", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "admin.html"));
+  res.sendFile(path.join(__dirname, "public/admin.html"));
 });
 
-/* ---------- SERVER ---------- */
+app.get("/", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/index.html"));
+});
+
+// ---------- SERVER ----------
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log("✅ Server running on port", PORT);
+  console.log("🚀 Server running on port", PORT);
 });
