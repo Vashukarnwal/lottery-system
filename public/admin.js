@@ -1,22 +1,18 @@
 function addWinner() {
-  const number = document.getElementById("num").value;
+  const number = document.getElementById("number").value;
 
   fetch("/add-winner", {
-   method: "POST",
-    headers: {
-      "Content-Type": "application/json"
-    },
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ number })
   })
   .then(res => res.json())
   .then(data => {
     if (data.success) {
-      document.getElementById("msg").innerText = "✅ Winner Added";
+      alert("Winner Added Successfully");
     } else {
-      document.getElementById("msg").innerText = "❌ Error";
+      alert("Failed");
     }
   })
-  .catch(() => {
-    document.getElementById("msg").innerText = "❌ Server error";
-  });
+  .catch(() => alert("Server error"));
 }

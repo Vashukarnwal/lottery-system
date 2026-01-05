@@ -1,57 +1,45 @@
 const express = require("express");
-const path = require("path");
 const fs = require("fs");
+const path = require("path");
 
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// 🔥 STATIC FILES (CSS, IMG, JS)
-app.use(express.static(path.join(__dirname, "public")));
+// middleware
 app.use(express.json());
+app.use(express.static("public"));
 
-// 🏠 HOME
-app.get("/", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "index.html"));
-});
+// file path safe for render
+const resultFile = path.join(__dirname, "result.json");
 
-// 🔐 LOGIN
-app.get("/login", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "login.html"));
-});
-
-// 👨‍💼 ADMIN
-app.get("/admin", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "admin.html"));
-});
-
-// 📊 RESULT PAGE
-app.get("/result", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "result.html"));
-});
-
-// 🏆 WIN PAGE
-app.get("/won", (req, res) => {
-  res.sendFile(path.join(__dirname, "public", "won.html"));
-});
-
-// ➕ ADD WINNER
+// ADMIN API
 app.post("/add-winner", (req, res) => {
-  const { number } = req.body;
-  if (!number) return res.json({ success: false });
+  try {
+    const { number } = req.body;
 
-  fs.writeFileSync("result.json", JSON.stringify({ winner: number }));
-  res.json({ success: true });
+    if (!number) {
+      return res.status(400).json({ success: false, message: "Number required" });
+    }
+
+    fs.writeFileSync(resultFile, JSON.stringify({ winner: number }));
+    res.json({ success: true });
+
+  } catch (err) {
+    console.error("ERROR:", err);
+    res.status(500).json({ success: false });
+  }
 });
 
-// ✅ CHECK RESULT
-app.post("/check", (req, res) => {
-  const { number } = req.body;
-  const data = JSON.parse(fs.readFileSync("result.json", "utf8"));
-
-  res.json({ win: data.winner === number });
+// RESULT API
+app.get("/get-result", (req, res) => {
+  if (!fs.existsSync(resultFile)) {
+    return res.json({ winner: null });
+  }
+  const data = fs.readFileSync(resultFile);
+  res.json(JSON.parse(data));
 });
 
-// 🚀 START SERVER
+// START SERVER
 app.listen(PORT, () => {
-  console.log("Server running on port " + PORT);
+  console.log("Server running on port", PORT);
 });
