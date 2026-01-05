@@ -1,55 +1,59 @@
-
-
-
-
-
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
 
-// middleware
 app.use(express.json());
 app.use(express.static("public"));
 
-// file path safe for render
-const resultFile = path.join(__dirname, "result.json");
+const DATA_FILE = path.join(__dirname, "result.json");
 
+/* ---------- helper functions ---------- */
+function readWinner() {
+  if (!fs.existsSync(DATA_FILE)) {
+    return { winner: null };
+  }
+  return JSON.parse(fs.readFileSync(DATA_FILE, "utf8"));
+}
+
+function saveWinner(number) {
+  fs.writeFileSync(DATA_FILE, JSON.stringify({ winner: number }, null, 2));
+}
+
+/* ---------- API ROUTES ---------- */
+
+// ✅ ADD WINNER (ADMIN)
+app.post("/api/add-winner", (req, res) => {
+  const { number } = req.body;
+
+  if (!number) {
+    return res.status(400).json({ success: false, message: "No number" });
+  }
+
+  saveWinner(number);
+  console.log("Winner saved:", number);
+
+  res.json({ success: true });
+});
+
+// ✅ CHECK RESULT (USER)
+app.get("/api/check/:number", (req, res) => {
+  const userNumber = req.params.number;
+  const data = readWinner();
+
+  res.json({
+    winner: data.winner === userNumber
+  });
+});
+
+// ✅ ADMIN PAGE ROUTE
 app.get("/admin", (req, res) => {
-  res.sendFile(__dirname + "/public/admin.html");
+  res.sendFile(path.join(__dirname, "public", "admin.html"));
 });
 
-
-// ADMIN API
-app.post("/add-winner", (req, res) => {
-  try {
-    const { number } = req.body;
-
-    if (!number) {
-      return res.status(400).json({ success: false, message: "Number required" });
-    }
-
-    fs.writeFileSync(resultFile, JSON.stringify({ winner: number }));
-    res.json({ success: true });
-
-  } catch (err) {
-    console.error("ERROR:", err);
-    res.status(500).json({ success: false });
-  }
-});
-
-// RESULT API
-app.get("/get-result", (req, res) => {
-  if (!fs.existsSync(resultFile)) {
-    return res.json({ winner: null });
-  }
-  const data = fs.readFileSync(resultFile);
-  res.json(JSON.parse(data));
-});
-
-// START SERVER
+/* ---------- SERVER ---------- */
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log("Server running on port", PORT);
+  console.log("✅ Server running on port", PORT);
 });
