@@ -1,3 +1,8 @@
+
+
+
+
+
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
@@ -11,6 +16,11 @@ app.use(express.static("public"));
 
 // file path safe for render
 const resultFile = path.join(__dirname, "result.json");
+
+app.get("/admin", (req, res) => {
+  res.sendFile(__dirname + "/public/admin.html");
+});
+
 
 // ADMIN API
 app.post("/add-winner", (req, res) => {
