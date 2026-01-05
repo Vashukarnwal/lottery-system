@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Live Result</title>
+
+  <style>
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: #f2f6ff;
+      font-family: Arial, sans-serif;
+    }
+    .box {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,.1);
+      text-align: center;
+      width: 300px;
+    }
+    input {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      margin-bottom: 15px;
+    }
+    button {
+      width: 100%;
+      padding: 12px;
+      background: orange;
+      border: none;
+      font-size: 16px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    p {
+      margin-top: 15px;
+      font-weight: bold;
+    }
+  </style>
+</head>
+
+<body>
+
+<div class="box">
+  <h2>Live Result</h2>
+
+  <input type="text" id="num" placeholder="Enter your number" />
+  <button onclick="checkResult()">Check Result</button>
+
+  <p id="msg"></p>
+</div>
+
+<script>
+  async function checkResult() {
+    const number = document.getElementById("num").value;
+    const msg = document.getElementById("msg");
+
+    if (!number) {
+      msg.innerText = "Please enter number";
+      msg.style.color = "red";
+      return;
+    }
+
+    try {
+      const res = await fetch("/check", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({ number })
+      });
+
+      const data = await res.json();
+
+      if (data.winner) {
+        window.location.href = "/won.html";
+      } else {
+        msg.innerText = "❌ Not a winner";
+        msg.style.color = "red";
+      }
+
+    } catch (err) {
+      msg.innerText = "Server error";
+      msg.style.color = "red";
+    }
+  }
+</script>
+
+</body>
+</html>

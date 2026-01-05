@@ -1,0 +1,833 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Kerala State Lottery</title>
+  <link rel="stylesheet" href="style.css">
+  <style>* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+.top-spacer {
+  height: 180px;        /* yahin se space control hota hai */
+  background: linear-gradient(135deg, #0b4f3a, #063428);  /* light premium background */
+}
+/* Loading overlay */
+#loadingOverlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0,0,0,0.4);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(135deg,#e9ecef,#f8f9fa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.box {
+  width: 360px;
+  background: #fff;
+  padding: 30px;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+}
+
+h2 {
+  margin-bottom: 20px;
+  color: #0d47a1;
+}
+
+input {
+  width: 100%;
+  padding: 12px;
+  margin-bottom: 15px;
+  border-radius: 6px;
+  border: 1px solid #ccc;
+}
+body {
+  font-family: Arial;
+  background: #f4f4f4;
+}
+
+.card {
+  width: 300px;
+  margin: 150px auto;
+  padding: 20px;
+  background: white;
+  text-align: center;
+  border-radius: 10px;
+}
+
+input {
+  width: 90%;
+  padding: 10px;
+  margin: 10px 0;
+}
+
+button {
+  width: 95%;
+  padding: 10px;
+  background: orange;
+  border: none;
+  cursor: pointer;
+}
+
+
+button {
+  width: 100%;
+  padding: 12px;
+  background: orange;
+  border: none;
+  border-radius: 6px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  background: darkorange;
+}
+
+#msg {
+  margin-top: 15px;
+  font-weight: bold;
+}
+
+.success { color: green; }
+.error { color: red; }
+
+
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+}
+
+.card {
+  background: white;
+  width: 300px;
+  margin: 150px auto;
+  padding: 20px;
+  text-align: center;
+  border-radius: 10px;
+}
+
+input, button {
+  width: 100%;
+  padding: 10px;
+  margin-top: 10px;
+}
+
+button {
+  background: orange;
+  border: none;
+  cursor: pointer;
+}
+
+
+/* Loading box */
+.loading-box {
+  background: #fff;
+  padding: 40px 60px;
+  border-radius: 10px;
+  text-align: center;
+  box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+}
+
+.loading-box h2 {
+  margin-bottom: 10px;
+  color: #555;
+}
+
+.loading-box p {
+  margin-bottom: 20px;
+  color: #777;
+}
+
+/* Spinner */
+.spinner {
+  width: 40px;
+  height: 40px;
+  border: 4px solid #ddd;
+  border-top: 4px solid #0d6efd;
+  border-radius: 50%;
+  animation: spin 1s linear infinite;
+  margin: auto;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+
+
+/* LAYOUT */
+.layout {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  background: #f8f8f8;
+  border-right: 1px solid #ddd;
+  padding: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+}
+
+.logo img {
+  width: 120px;
+  display: block;
+  margin-bottom: 10px;
+  margin-left: 40px;
+  padding-bottom: 20px;
+}
+
+.logo h2 {
+  color: #d32f2f;
+  font-size: 18px;
+  line-height: 1.3;
+  margin-bottom: 30px;
+  text-align: center;
+  padding-bottom: 20px;
+}
+
+.sidebar nav a {
+  display: block;
+  padding: 12px 15px;
+  margin-bottom: 10px;
+  text-decoration: none;
+  color: #333;
+  border-radius: 6px;
+}
+
+.sidebar nav a.active,
+.sidebar nav a:hover {
+  background: #0b4f3a;
+  color: #fff;
+}
+
+/* CONTENT */
+.content {
+  margin-left: 260px;
+  width: calc(100% - 260px);
+}
+
+/* SLIDER */
+.slider {
+  overflow: hidden;
+}
+
+.slides {
+  display: flex;
+  animation: slide 15s infinite;
+}
+
+.slides img {
+  width: 100%;
+  height: auto;
+}
+
+@keyframes slide {
+  0% {transform: translateX(0);}
+  33% {transform: translateX(-100%);}
+  66% {transform: translateX(-200%);}
+}
+
+/* RESULT BOX */
+.result-box {
+  margin: 120px auto;
+  background: #ffffff;
+  width: 480px;
+  padding: 50px 40px;
+  text-align: center;
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.12);
+}
+
+.result-box h2 {
+  font-size: 26px;
+  margin-bottom: 15px;
+}
+
+.blink {
+  color: red;
+  font-weight: bold;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  50% {opacity: 0;}
+}
+
+.result-box button {
+  margin-top: 20px;
+  padding: 12px 30px;
+  background: #1976d2;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+/* TEXT */
+.text {
+  padding: 40px;
+  text-align: center;
+  color: #333;
+}
+
+/* MAP */
+.map iframe {
+  width: 100%;
+  height: 350px;
+  border: none;
+}
+
+/* FOOTER */
+footer {
+  background: #f1f1f1;
+  padding: 30px;
+  text-align: center;
+}
+
+footer .copy {
+  margin-top: 15px;
+  font-size: 14px;
+  color: #ffffff;
+}
+
+/* INFO SECTION (MISSING PART FIX) */
+.info-section {
+  background: #f7f9fb;
+  padding: 120px 100px;
+  text-align: center;
+  border-top: 1px solid #ddd;
+}
+
+.info-section p {
+  max-width: 900px;
+  margin: 0 auto 40px auto;
+  font-size: 17px;
+  line-height: 2;
+  color: #222;
+}
+
+.map-section {
+  padding: 120px 80px;
+  background: #ffffff;
+  text-align: center;
+}
+
+.map-section h2 {
+  font-size: 28px;
+  margin-bottom: 40px;
+}
+
+.map-section iframe {
+  width: 100%;
+  height: 420px;
+  border-radius: 16px;
+}
+.premium-footer {
+  background: linear-gradient(135deg, #0b4f3a, #063428);
+  color: #ffffff;
+  padding: 100px 80px 40px;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 60px;
+  margin-bottom: 40px;
+}
+
+.footer-grid h3 {
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.footer-grid p {
+  line-height: 1.8;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+.premium-footer .copy {
+  text-align: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.2);
+  padding-top: 20px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+
+
+
+
+/* help page /*
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+/* PAGE WRAPPER */
+/* WRAPPER */
+.wrapper {
+  display: flex;
+  min-height: calc(100vh - 260px); /* footer ke liye space */
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 260px;
+  background: #ffffff;
+  padding: 30px 20px;
+  border-right: 1px solid #ddd;
+}
+
+/* RIGHT SIDE */
+.main-area {
+  flex: 1;
+  background: #f5f7fa;
+}
+
+/* FOOTER */
+.footer {
+  width: 100%;
+  background: linear-gradient(135deg, #0b4f3a, #063428);
+  color: #ffffff;
+  padding: 60px 80px 20px;
+}
+
+.footer-inner {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 60px;
+  margin-bottom: 30px;
+}
+
+.footer h3 {
+  margin-bottom: 15px;
+  font-size: 18px;
+}
+
+.footer p {
+  line-height: 1.8;
+  font-size: 15px;
+  opacity: 0.9;
+}
+
+.footer .copy {
+  text-align: center;
+  border-top: 1px solid rgba(255,255,255,0.25);
+  padding-top: 15px;
+  font-size: 14px;
+  opacity: 0.8;
+}
+ .top-header {
+  width: 100%;
+  background: #ffffff;
+  border-bottom: 1px solid #e0e0e0;
+  padding: 30px 0;
+}
+
+.header-inner {
+  max-width: 1200px;
+  margin: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* LOGO */
+.header-logo img {
+  height: 120px;
+}
+
+/* TITLE */
+.header-title {
+  flex: 1;
+  text-align: center;
+}
+
+.header-title h1 {
+  color: #c60000;
+  font-size: 42px;
+  font-weight: 700;
+  margin: 0;
+}
+
+.header-title h2 {
+  color: #c60000;
+  font-size: 36px;
+  font-weight: 600;
+  margin-top: 10px;
+}
+
+/* SEARCH ICON */
+.header-search {
+  font-size: 22px;
+  cursor: pointer;
+  color: #444;
+  padding-right: 20px;
+}
+ @media (max-width: 768px) {
+  .header-inner {
+    flex-direction: column;
+    gap: 20px;
+  }
+
+  .header-logo img {
+    height: 90px;
+  }
+
+  .header-title h1 {
+    font-size: 30px;
+  }
+
+  .header-title h2 {
+    font-size: 24px;
+  }
+}
+
+
+.help-page {
+  padding: 60px 20px;
+  background: #f6f7f8;
+  min-height: 100vh;
+}
+
+.help-heading {
+  text-align: center;
+  font-size: 22px;
+  margin-bottom: 30px;
+  color: #ff9800;
+  font-weight: 600;
+}
+
+.help-form-box {
+  max-width: 700px;   /* 👈 form bada */
+  margin: auto;
+  background: #fff;
+  padding: 35px 40px;
+  border-radius: 8px;
+  box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+}
+
+.help-form-box h3 {
+  margin: 0;
+  font-size: 20px;
+  color: #1b5e20;
+}
+
+.sub-text {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 25px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 14px;     /* ✅ normal font */
+  margin-bottom: 6px;
+  color: #333;
+}
+
+.form-group input,
+.form-group select,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;     /* ✅ normal font */
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  outline: none;
+}
+
+.form-group input:focus,
+.form-group select:focus,
+.form-group textarea:focus {
+  border-color: #1b5e20;
+}
+
+.submit-btn {
+  background: #1b5e20;
+  color: #fff;
+  border: none;
+  padding: 12px 30px;
+  font-size: 14px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  background: #144018;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  /* result css/*
+
+
+
+  * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+  background: #ffffff;
+}
+
+/* Center page */
+.result-wrapper {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 60px;
+}
+
+/* Card */
+.result-card {
+  width: 520px;
+  border: 2px solid #0b3a6f;
+  border-radius: 12px;
+  padding: 20px;
+}
+
+/* Header */
+.result-header {
+  background: #063a6b;
+  color: #fff;
+  padding: 14px 18px;
+  font-size: 18px;
+  font-weight: bold;
+  border-radius: 8px 8px 0 0;
+}
+
+/* Body */
+.result-body {
+  display: flex;
+  margin-top: 15px;
+}
+
+.result-body input {
+  flex: 1;
+  padding: 12px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px 0 0 4px;
+  outline: none;
+}
+
+.result-body button {
+  padding: 12px 22px;
+  background: #ffc107;
+  border: none;
+  font-size: 14px;
+  cursor: pointer;
+  border-radius: 0 4px 4px 0;
+}
+
+.result-body button:hover {
+  background: #e0a800;
+}
+
+/* Footer */
+.result-footer {
+  margin-top: 18px;
+  text-align: center;
+  font-size: 13px;
+  color: #555;
+}
+</style>
+</head>
+<script src="node.js"></script>
+</body>
+</html>
+
+<!-- Loading Overlay -->
+<div id="loadingOverlay">
+  <div class="loading-box">
+    <h2>Loading Result...</h2>
+    <p>Please wait...</p>
+    <div class="spinner"></div>
+  </div>
+</div>
+
+<script>
+function openResult() {
+  // show loading
+  document.getElementById("loadingOverlay").style.display = "flex";
+
+  // fake loading delay (2 sec)
+  setTimeout(() => {
+    window.location.href = "result.html";
+  }, 2000);
+}
+</script>
+
+
+<body>
+  <div class="top-spacer"> </div>
+
+
+<div class="layout">
+
+  <!-- LEFT SIDEBAR -->
+  <aside class="sidebar">
+    <div class="logo">
+      <img src="img/logo.png" alt="Kerala Lottery">
+      <h2>Kerala<br>Government<br>Lottery</h2>
+    </div>
+
+    <nav>
+      <a href="index.html" class="active">Home</a>
+      <a href="help.html" class="active">Help Center</a>
+    </nav>
+  </aside>
+
+  <!-- RIGHT CONTENT -->
+  <main class="content">
+
+    <!-- SLIDER -->
+    <section class="slider">
+      <div class="slides">
+        <img src="img/slider 1.jpg">
+        <img src="img/slider 2.jpg">
+        <img src="img/slider 3.jpg">
+      </div>
+    </section>
+
+    <!-- RESULT CARD -->
+    <section class="result-box">
+      <h2>Verify & Download Result</h2>
+      <p class="blink">Result is Live Now</p>
+      <button class="open-result-btn" onclick="openResult()">Open Result</button>
+
+    </section>
+
+    <!-- AFTER RESULT SECTION -->
+<section id="about" class="info-section">
+  <p>
+    In 1967 all private lotteries were banned and the Government of Kerala
+    started the Kerala State Lotteries. The idea behind the setup of the new
+    department was from the then Finance Minister of the state, P. K. Kunju.
+  </p>
+
+  <p>
+    The objectives of starting the programme were to provide employment to
+    people and supplement government finance without disturbing the public.
+  </p>
+
+  <p>
+    The department soon became a model for other states in India. Soon many
+    other states jumped into the bandwagon by starting their own lotteries.
+  </p>
+</section>
+
+
+    <!-- TEXT SECTION -->
+    <section class="text">
+      <p>
+        In 1967 all private lotteries were banned and the Government of Kerala
+        started the Kerala State Lotteries to provide employment and support.
+      </p>
+    </section>
+
+    
+
+    <!-- MAP -->
+   <section class="map-section">
+  <h2>Our Office Location</h2>
+  <iframe
+    src="https://www.google.com/maps?q=Thampanoor%20Kerala&output=embed"
+    loading="lazy">
+  </iframe>
+</section>
+
+
+    <!-- FOOTER -->
+   <footer class="premium-footer">
+  <div class="footer-grid">
+    <div>
+      <h3>Kerala State Lottery</h3>
+      <p>
+        3rd Floor KSRTC Building,<br>
+        Thampanoor, Thiruvananthapuram – 695001
+      </p>
+    </div>
+
+    <div>
+      <h3>Contact</h3>
+      <p>📞 090389 102956</p>
+      <p>📧 support@keralalottery.in</p>
+    </div>
+
+    <div>
+      <h3>Quick Links</h3>
+      <p>Home</p>
+      <p>Results</p>
+      <p>Help Center</p>
+    </div>
+  </div>
+
+  <p class="copy">
+    © 2024 Kerala Mega Jackpot. All Rights Reserved.
+  </p>
+</footer>
+
+
+  </main>
+</div>
+
+</body>
+</html>
