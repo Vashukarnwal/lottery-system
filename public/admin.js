@@ -1,8 +1,8 @@
 function addWinner() {
   const number = document.getElementById("num").value;
 
-  fetch("http://localhost:3000/add-winner", {
-    method: "POST",
+  fetch("/add-winner", {
+   method: "POST",
     headers: {
       "Content-Type": "application/json"
     },
