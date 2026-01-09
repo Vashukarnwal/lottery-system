@@ -49,44 +49,45 @@
 <div class="box">
   <h2>Live Result</h2>
 
-  <input type="text" id="userNumber" placeholder="Enter your number">
-<button onclick="checkResult()">Check Result</button>
-<p id="result"></p>
-<input id="number" />
-<button onclick="checkResult()">Check Result</button>
-<script src="result.js"></script>
-<input type="text" id="number" placeholder="Enter your number" />
-<button onclick="checkResult()">Check Result</button>
+  <!-- ✅ SINGLE INPUT (extra input hata diya) -->
+  <input type="text" id="number" placeholder="Enter your number">
 
-<script src="result.js"></script>
+  <button onclick="checkResult()">Check Result</button>
 
+  <p id="result"></p>
 </div>
 
+<!-- ❌ result.js hata diya, yahin JS rakha (tumhari style me) -->
 <script>
 function checkResult() {
-  const userNumber = document.getElementById("userNumber").value.trim();
+  const userNumber = document.getElementById("number").value.trim();
+  const resultBox = document.getElementById("result");
 
-  fetch("/get-result")
+  if (!userNumber) {
+    resultBox.innerText = "Enter number";
+    return;
+  }
+
+  fetch("/api/check", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({ number: userNumber })
+  })
     .then(res => res.json())
     .then(data => {
-      if (!data.winner) {
-        document.getElementById("result").innerText = "Result not declared yet";
-        return;
-      }
-
-      // IMPORTANT: string comparison
-      if (String(userNumber) === String(data.winner)) {
+      if (data.winner) {
         window.location.href = "/won.html";
       } else {
-        document.getElementById("result").innerText = "❌ Not a Winner";
+        resultBox.innerText = "❌ Not a Winner";
       }
     })
     .catch(() => {
-      document.getElementById("result").innerText = "Server error";
+      resultBox.innerText = "Server error";
     });
 }
 </script>
-
 
 </body>
 </html>
