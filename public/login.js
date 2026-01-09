@@ -7,16 +7,12 @@ function login() {
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ username, password })
   })
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      // ✅ login successful → admin panel
-      window.location.href = "/admin";
-    } else {
-      document.getElementById("msg").innerText = "Invalid login";
-    }
-  })
-  .catch(() => {
-    document.getElementById("msg").innerText = "Server error";
-  });
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        window.location.href = "/admin"; // 🔥 yahin se admin open
+      } else {
+        document.getElementById("msg").innerText = "Invalid login";
+      }
+    });
 }

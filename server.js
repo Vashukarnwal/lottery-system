@@ -17,10 +17,12 @@ app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
   if (username === ADMIN_USER && password === ADMIN_PASS) {
-    res.json({ success: true });
-  } else {
-    res.json({ success: false });
-  }
+  isLoggedIn = true; // ✅ login successful
+  res.json({ success: true });
+} else {
+  res.json({ success: false });
+}
+
 });
 
 // ---------- data file ----------
@@ -70,8 +72,12 @@ app.post("/api/check", (req, res) => {
 
 // pages
 app.get("/admin", (req, res) => {
+  if (!isLoggedIn) {
+    return res.redirect("/login.html"); // 🔐 pehle login
+  }
   res.sendFile(path.join(__dirname, "public/admin.html"));
 });
+
 
 app.get("/", (req, res) => {
   res.sendFile(path.join(__dirname, "public/index.html"));
