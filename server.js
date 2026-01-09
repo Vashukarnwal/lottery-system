@@ -1,3 +1,23 @@
+// admin credentials
+const ADMIN_USER = "admin";
+const ADMIN_PASS = "12345";
+
+app.post("/login", (req, res) => {
+  const { username, password } = req.body;
+
+  if (username === ADMIN_USER && password === ADMIN_PASS) {
+    res.json({ success: true });
+  } else {
+    res.json({ success: false });
+  }
+});
+
+// ❌ direct admin open nahi hoga
+app.get("/admin", (req, res) => {
+  res.sendFile(__dirname + "/public/admin.html");
+});
+
+
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
