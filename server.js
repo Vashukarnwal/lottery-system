@@ -1,7 +1,18 @@
-// admin credentials
+const express = require("express");
+const fs = require("fs");
+const path = require("path");
+
+const app = express(); // ✅ app pehle define
+
+// ---------- middleware ----------
+app.use(express.json());
+app.use(express.static("public"));
+
+// ---------- admin credentials ----------
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "12345";
 
+// ---------- login route ----------
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
@@ -12,22 +23,7 @@ app.post("/login", (req, res) => {
   }
 });
 
-// ❌ direct admin open nahi hoga
-app.get("/admin", (req, res) => {
-  res.sendFile(__dirname + "/public/admin.html");
-});
-
-
-const express = require("express");
-const fs = require("fs");
-const path = require("path");
-
-const app = express();
-
-// middleware
-app.use(express.json());
-app.use(express.static("public"));
-
+// ---------- data file ----------
 const DATA_FILE = "result.json";
 
 // ---------- helpers ----------
@@ -46,8 +42,6 @@ function writeData(data) {
 
 // admin add winner
 app.post("/api/add-winner", (req, res) => {
-  console.log("BODY:", req.body);
-
   const { number } = req.body;
 
   if (!number) {
@@ -61,7 +55,6 @@ app.post("/api/add-winner", (req, res) => {
     writeData(data);
   }
 
-  console.log("✅ Winner saved:", number);
   res.json({ success: true });
 });
 
