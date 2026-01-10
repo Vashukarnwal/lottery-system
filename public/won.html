@@ -94,9 +94,8 @@
 
     <div class="winner-text">
       <h1>🎉 YOU WON 🎉</h1>
-      <!-- 🔝 WINNING NUMBER -->
-      <div class="number" id="winnerNumber"></div>
-      <div class="live">● LIVE</div>
+      <div class="number"></div>
+      <div class="live"></div>
     </div>
   </div>
 
@@ -104,30 +103,11 @@
   <div class="certificate-section">
     <img src="img/certificate.png" alt="Certificate">
 
-    <!-- 🔽 CERTIFICATE DETAILS -->
-    <div class="cert-name" id="certName"></div>
-    <div class="cert-number" id="certNumber"></div>
+    <div class="cert-name"></div>
+    <div class="cert-number"></div>
   </div>
 
 </div>
-
-<!-- ===== ONLY TEXT FILL SCRIPT ===== -->
-<script>
-fetch("/api/winner")
-  .then(res => res.json())
-  .then(data => {
-    if (!data) return;
-
-    // 🔝 top winner number
-    document.getElementById("winnerNumber").innerText = data.number || "";
-
-    // 🔽 certificate name + number
-    document.getElementById("certName").innerText = data.name || "";
-    document.getElementById("certNumber").innerText =
-      data.number ? "Winning Number : " + data.number : "";
-  })
-  .catch(err => console.log(err));
-</script>
 
 </body>
 </html>
