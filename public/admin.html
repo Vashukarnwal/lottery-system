@@ -2,51 +2,98 @@
 <html>
 <head>
   <title>Admin Panel</title>
-  <link rel="stylesheet" href="style.css">
-  <style>body {
-  font-family: Arial;
-  background: #f4f6f8;
-}
 
-.box {
-  width: 300px;
-  margin: 120px auto;
-  background: #fff;
-  padding: 25px;
-  border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0,0,0,.1);
-  text-align: center;
-}
+  <style>
+    body {
+      font-family: Arial;
+      background: #f4f6f8;
+    }
 
-input {
-  width: 100%;
-  padding: 10px;
-  margin-bottom: 12px;
-}
+    .box {
+      width: 320px;
+      margin: 120px auto;
+      background: #fff;
+      padding: 25px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0,0,0,.1);
+      text-align: center;
+    }
 
-button {
-  width: 100%;
-  padding: 10px;
-  background: orange;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-}
-</style>
-  
+    h2 {
+      margin-bottom: 20px;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 12px;
+    }
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background: orange;
+      border: none;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    #msg {
+      margin-top: 12px;
+      font-size: 14px;
+    }
+  </style>
 </head>
 
 <body>
 
 <div class="box">
-  <input id="winner" />
-<button onclick="addWinner()">Add Winner</button>
-<script src="admin.js"></script>
+  <h2>Admin Panel</h2>
 
+  <!-- Winner Name -->
+  <input id="winnerName" placeholder="Winner Name" />
 
-  
+  <!-- Winning Number -->
+  <input id="winnerNumber" placeholder="Winning Number" />
+
+  <button onclick="addWinner()">Add Winner</button>
+
+  <div id="msg"></div>
 </div>
 
-<script src="admin.js"></script>
+<script>
+function addWinner() {
+  const name = document.getElementById("winnerName").value;
+  const number = document.getElementById("winnerNumber").value;
+
+  if (!name || !number) {
+    msg.innerText = "Please fill all fields";
+    msg.style.color = "red";
+    return;
+  }
+
+  fetch("/api/add-winner", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({
+      name: name,
+      number: number
+    })
+  })
+  .then(res => res.json())
+  .then(data => {
+    if (data.success) {
+      msg.innerText = "✅ Winner Added Successfully";
+      msg.style.color = "green";
+      winnerName.value = "";
+      winnerNumber.value = "";
+    } else {
+      msg.innerText = "❌ Error adding winner";
+      msg.style.color = "red";
+    }
+  });
+}
+</script>
+
 </body>
 </html>

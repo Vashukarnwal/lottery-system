@@ -1,38 +1,112 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>You Won</title>
+<meta charset="UTF-8">
+<title>Lottery Winner</title>
 
-  <style>
-    body {
-      margin: 0;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background: linear-gradient(135deg, #00c853, #b2ff59);
-      font-family: Arial, sans-serif;
-    }
-    .box {
-      background: white;
-      padding: 40px;
-      border-radius: 14px;
-      text-align: center;
-      box-shadow: 0 15px 40px rgba(0,0,0,.2);
-    }
-    h1 {
-      color: #2e7d32;
-      font-size: 36px;
-    }
-  </style>
+<style>
+  body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f1f1f1;
+  }
+
+  .page {
+    max-width: 420px;
+    margin: auto;
+    background: #fff;
+  }
+
+  /* ===== WINNER IMAGE SECTION ===== */
+  .winner-section {
+    position: relative;
+  }
+
+  .winner-section img {
+    width: 100%;
+    display: block;
+  }
+
+  .winner-text {
+    position: absolute;
+    bottom: 140px;
+    width: 100%;
+    text-align: center;
+    color: white;
+  }
+
+  .winner-text h1 {
+    margin: 0;
+    font-size: 26px;
+  }
+
+  .winner-text .number {
+    font-size: 28px;
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  .live {
+    display: inline-block;
+    margin-top: 12px;
+    background: red;
+    padding: 6px 18px;
+    border-radius: 20px;
+    font-size: 14px;
+  }
+
+  /* ===== CERTIFICATE SECTION ===== */
+  .certificate-section {
+    position: relative;
+  }
+
+  .certificate-section img {
+    width: 100%;
+    display: block;
+  }
+
+  .cert-name {
+    position: absolute;
+    top: 220px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-weight: bold;
+    font-size: 18px;
+  }
+
+  .cert-number {
+    position: absolute;
+    top: 290px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 16px;
+  }
+</style>
 </head>
 
 <body>
 
-<div class="box">
-  <h1>🎉 YOU WON 🎉</h1>
-  <p>Congratulations!</p>
+<div class="page">
+
+  <!-- ===== WINNER IMAGE ===== -->
+  <div class="winner-section">
+    <img src="img/winner.png" alt="Winner">
+
+    <div class="winner-text">
+      <h1>🎉 YOU WON 🎉</h1>
+      <div class="number"></div>
+      <div class="live"></div>
+    </div>
+  </div>
+
+  <!-- ===== CERTIFICATE IMAGE ===== -->
+  <div class="certificate-section">
+    <img src="img/certificate.png" alt="Certificate">
+
+    <div class="cert-name"></div>
+    <div class="cert-number"></div>
+  </div>
+
 </div>
 
 </body>
