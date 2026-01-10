@@ -1,6 +1,7 @@
 const express = require("express");
 const fs = require("fs");
 const path = require("path");
+const session = require("express-session");
 
 const app = express();
 
@@ -8,27 +9,45 @@ const app = express();
 app.use(express.json());
 app.use(express.static("public"));
 
+app.use(
+  session({
+    secret: "lottery-secret-key",
+    resave: false,
+    saveUninitialized: false
+  })
+);
+
 // ---------- admin credentials ----------
 const ADMIN_USER = "admin";
 const ADMIN_PASS = "12345";
-
-// ---------- login state ----------
-let isLoggedIn = false;
 
 // ---------- login route ----------
 app.post("/login", (req, res) => {
   const { username, password } = req.body;
 
   if (username === ADMIN_USER && password === ADMIN_PASS) {
-    isLoggedIn = true;
+    req.session.isAdmin = true;
     res.json({ success: true });
   } else {
     res.json({ success: false });
   }
 });
 
+// ---------- logout ----------
+app.get("/logout", (req, res) => {
+  req.session.destroy(() => {
+    res.redirect("/login.html");
+  });
+});
+
+// ---------- auth middleware ----------
+function isAdmin(req, res, next) {
+  if (req.session.isAdmin) return next();
+  res.status(401).json({ success: false });
+}
+
 // ---------- data file ----------
-const DATA_FILE = "result.json";
+const DATA_FILE = path.join(__dirname, "result.json");
 
 // ---------- helpers ----------
 function readData() {
@@ -45,19 +64,14 @@ function writeData(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
-// ---------- ADMIN : ADD WINNER (NAME + NUMBER) ----------
-app.post("/api/add-winner", (req, res) => {
-  if (!isLoggedIn) {
-    return res.status(401).json({ success: false });
-  }
-
+// ---------- ADMIN : ADD WINNER ----------
+app.post("/api/add-winner", isAdmin, (req, res) => {
   const { name, number } = req.body;
   if (!name || !number) {
     return res.json({ success: false });
   }
 
   const data = readData();
-
   data.name = name;
   data.number = number;
 
@@ -73,12 +87,10 @@ app.post("/api/add-winner", (req, res) => {
 app.post("/api/check", (req, res) => {
   const { number } = req.body;
   const data = readData();
-
-  const win = data.winners.includes(number);
-  res.json({ winner: win });
+  res.json({ winner: data.winners.includes(number) });
 });
 
-// ---------- AUTO-FILL API (FOR won.html) ----------
+// ---------- AUTO-FILL API ----------
 app.get("/api/winner", (req, res) => {
   const data = readData();
   res.json({
@@ -89,7 +101,7 @@ app.get("/api/winner", (req, res) => {
 
 // ---------- pages ----------
 app.get("/admin", (req, res) => {
-  if (!isLoggedIn) {
+  if (!req.session.isAdmin) {
     return res.redirect("/login.html");
   }
   res.sendFile(path.join(__dirname, "public/admin.html"));
