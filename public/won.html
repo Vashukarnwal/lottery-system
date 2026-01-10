@@ -28,12 +28,18 @@
   }
 
   .winner-text {
-    position: absolute;
-    bottom: 140px;
-    width: 100%;
-    text-align: center;
-    color: white;
-  }
+  position: absolute;
+  bottom: 120px;              /* 👈 thoda upar */
+  width: 100%;
+  display: flex;              /* ⭐ */
+  flex-direction: column;     /* ⭐ */
+  align-items: center;        /* ⭐ perfect center */
+  justify-content: center;
+  text-align: center;
+  color: white;
+  gap: 6px;                   /* ⭐ spacing control */
+}
+
 
   .winner-text h1 {
     margin: 0;
@@ -41,19 +47,22 @@
   }
 
   .winner-text .number {
-    font-size: 28px;
-    font-weight: bold;
-    margin-top: 10px;
-  }
+  font-size: 30px;
+  font-weight: bold;
+  letter-spacing: 2px;
+}
+
 
   .live {
-    display: inline-block;
-    margin-top: 12px;
-    background: red;
-    padding: 6px 18px;
-    border-radius: 20px;
-    font-size: 14px;
-  }
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: red;
+  padding: 6px 16px;
+  border-radius: 20px;
+  font-size: 13px;
+}
+
 
   /* ===== CERTIFICATE SECTION ===== */
   .certificate-section {
