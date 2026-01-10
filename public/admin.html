@@ -63,8 +63,9 @@
 
 <script>
 function addWinner() {
-  const name = document.getElementById("winnerName").value;
-  const number = document.getElementById("winnerNumber").value;
+  const name = document.getElementById("winnerName").value.trim();
+  const number = document.getElementById("winnerNumber").value.trim();
+  const msg = document.getElementById("msg");
 
   if (!name || !number) {
     msg.innerText = "Please fill all fields";
@@ -72,30 +73,31 @@ function addWinner() {
     return;
   }
 
-fetch("/api/add-winner", {
-  method: "POST",
-  credentials: "include",   // ⭐⭐⭐ MOST IMPORTANT LINE
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify({
-    name: name,
-    number: number
+  fetch("/api/add-winner", {
+    method: "POST",
+    credentials: "include",   // ⭐ MUST
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ name, number })
   })
-})
-
-  .then(res => res.json())
-  .then(data => {
-    if (data.success) {
-      msg.innerText = "✅ Winner Added Successfully";
-      msg.style.color = "green";
-      winnerName.value = "";
-      winnerNumber.value = "";
-    } else {
-      msg.innerText = "❌ Error adding winner";
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        msg.innerText = "✅ Winner Added Successfully";
+        msg.style.color = "green";
+        winnerName.value = "";
+        winnerNumber.value = "";
+      } else {
+        msg.innerText = "❌ Error adding winner";
+        msg.style.color = "red";
+      }
+    })
+    .catch(() => {
+      msg.innerText = "❌ Server error";
       msg.style.color = "red";
-    }
-  });
+    });
 }
 </script>
+
 
 </body>
 </html>
