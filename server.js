@@ -5,15 +5,24 @@ const session = require("express-session");
 
 const app = express();
 
+/* ================= IMPORTANT FOR RENDER ================= */
+app.set("trust proxy", 1); // 🔥 MUST for Render / HTTPS
+
 // ---------- middleware ----------
 app.use(express.json());
 app.use(express.static("public"));
 
 app.use(
   session({
+    name: "lottery.sid",
     secret: "lottery-secret-key",
     resave: false,
-    saveUninitialized: false
+    saveUninitialized: false,
+    cookie: {
+      secure: true,        // 🔥 HTTPS required
+      httpOnly: true,
+      sameSite: "none"     // 🔥 cross-site cookie
+    }
   })
 );
 
@@ -43,7 +52,7 @@ app.get("/logout", (req, res) => {
 // ---------- auth middleware ----------
 function isAdmin(req, res, next) {
   if (req.session.isAdmin) return next();
-  res.status(401).json({ success: false });
+  return res.status(401).json({ success: false });
 }
 
 // ---------- data file ----------
@@ -67,6 +76,7 @@ function writeData(data) {
 // ---------- ADMIN : ADD WINNER ----------
 app.post("/api/add-winner", isAdmin, (req, res) => {
   const { name, number } = req.body;
+
   if (!name || !number) {
     return res.json({ success: false });
   }
