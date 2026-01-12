@@ -83,6 +83,7 @@ function writeData(data) {
 }
 
 // ---------- ADMIN : ADD WINNER (FULL DATA) ----------
+// ---------- ADMIN : ADD WINNER (FINAL) ----------
 app.post("/api/add-winner", isAdmin, (req, res) => {
   const { rank, name, number, ticket, series, amount, date } = req.body;
 
@@ -92,14 +93,21 @@ app.post("/api/add-winner", isAdmin, (req, res) => {
 
   const data = readData();
 
-  // 🔥 SAVE ALL DETAILS
-  data.rank = rank || "";
-  data.name = name;
+  data.rank   = rank || "";
+  data.name   = name;
   data.number = number;
   data.ticket = ticket || "";
   data.series = series || "";
   data.amount = amount || "";
-  data.date = date || "";
+  data.date   = date || "";
+
+  if (!data.winners.includes(number)) {
+    data.winners.push(number);
+  }
+
+  writeData(data);
+  res.json({ success: true });
+});
 
   // old winner logic (optional)
   if (!data.winners.includes(number)) {
