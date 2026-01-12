@@ -1,112 +1,46 @@
-<!DOCTYPE html>
-<html>
-<head>
-  <title>Admin Panel</title>
-
-  <style>
-    body {
-      font-family: Arial;
-      background: #f4f6f8;
-    }
-
-    .box {
-      width: 320px;
-      margin: 120px auto;
-      background: #fff;
-      padding: 25px;
-      border-radius: 8px;
-      box-shadow: 0 0 10px rgba(0,0,0,.1);
-      text-align: center;
-    }
-
-    h2 {
-      margin-bottom: 20px;
-    }
-
-    input {
-      width: 100%;
-      padding: 10px;
-      margin-bottom: 12px;
-    }
-
-    button {
-      width: 100%;
-      padding: 10px;
-      background: orange;
-      border: none;
-      cursor: pointer;
-      font-weight: bold;
-    }
-
-    #msg {
-      margin-top: 12px;
-      font-size: 14px;
-    }
-  </style>
-</head>
-
-<body>
-
-<div class="box">
-  <h2>Admin Panel</h2>
-
-  <!-- Winner Name -->
-  <input id="winnerName" placeholder="Winner Name" />
-
-  <!-- Winning Number -->
-  <input id="winnerNumber" placeholder="Winning Number" />
-
-  <input id="winnerRank" placeholder="Winner Rank (eg: 5th Winner)">
-<input id="winnerName" placeholder="Winner Name">
-<input id="ticketNumber" placeholder="Ticket Number">
-<input id="seriesCode" placeholder="Series Code">
-<input id="prizeAmount" placeholder="Prize Amount (eg: 12 Lakhs)">
-<input id="drawDate" placeholder="Draw Date (dd/mm/yyyy)">
-
-  
-
-  <button onclick="addWinner()">Add Winner</button>
-
-  <div id="msg"></div>
-</div>
-
-<script>
 function addWinner() {
-  const name = document.getElementById("winnerName").value.trim();
-  const number = document.getElementById("winnerNumber").value.trim();
-  const msg = document.getElementById("msg");
+  const name    = document.getElementById("winnerName").value.trim();
+  const number  = document.getElementById("winnerNumber").value.trim();
+  const rank    = document.getElementById("winnerRank").value.trim();
+  const ticket  = document.getElementById("ticketNumber").value.trim();
+  const series  = document.getElementById("seriesCode").value.trim();
+  const amount  = document.getElementById("prizeAmount").value.trim();
+  const date    = document.getElementById("drawDate").value.trim();
 
   if (!name || !number) {
-    msg.innerText = "Please fill all fields";
-    msg.style.color = "red";
+    alert("Name & Number required");
     return;
   }
 
   fetch("/api/add-winner", {
     method: "POST",
-    credentials: "include",   // ⭐ MUST
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify({ name, number })
+    credentials: "include",          // 🔥 MOST IMPORTANT
+    headers: {
+      "Content-Type": "application/json"
+    },
+    body: JSON.stringify({
+      name,
+      number,
+      rank,
+      ticket,
+      series,
+      amount,
+      date
+    })
   })
     .then(res => res.json())
     .then(data => {
       if (data.success) {
-        msg.innerText = "✅ Winner Added Successfully";
-        msg.style.color = "green";
-        winnerName.value = "";
-        winnerNumber.value = "";
+        alert("✅ Winner Added Successfully");
+
+        // clear fields
+        document.querySelectorAll("input").forEach(i => i.value = "");
       } else {
-        msg.innerText = "❌ Error adding winner";
-        msg.style.color = "red";
+        alert("❌ Not Authorized / Session Expired");
       }
     })
-    .catch(() => {
-      msg.innerText = "❌ Server error";
-      msg.style.color = "red";
+    .catch(err => {
+      console.error(err);
+      alert("❌ Server Error");
     });
 }
-</script>
-
-
-</body>
-</html>
