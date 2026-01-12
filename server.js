@@ -6,7 +6,7 @@ const session = require("express-session");
 const app = express();
 
 /* ================= IMPORTANT FOR RENDER ================= */
-app.set("trust proxy", 1); // 🔥 MUST for Render / HTTPS
+app.set("trust proxy", 1);
 
 // ---------- middleware ----------
 app.use(express.json());
@@ -19,9 +19,9 @@ app.use(
     resave: false,
     saveUninitialized: false,
     cookie: {
-      secure: true,        // 🔥 HTTPS required
+      secure: true,
       httpOnly: true,
-      sameSite: "none"     // 🔥 cross-site cookie
+      sameSite: "none"
     }
   })
 );
@@ -63,7 +63,16 @@ function readData() {
   if (!fs.existsSync(DATA_FILE)) {
     fs.writeFileSync(
       DATA_FILE,
-      JSON.stringify({ name: "", number: "", winners: [] })
+      JSON.stringify({
+        rank: "",
+        name: "",
+        number: "",
+        ticket: "",
+        series: "",
+        amount: "",
+        date: "",
+        winners: []
+      })
     );
   }
   return JSON.parse(fs.readFileSync(DATA_FILE));
@@ -73,18 +82,26 @@ function writeData(data) {
   fs.writeFileSync(DATA_FILE, JSON.stringify(data, null, 2));
 }
 
-// ---------- ADMIN : ADD WINNER ----------
+// ---------- ADMIN : ADD WINNER (FULL DATA) ----------
 app.post("/api/add-winner", isAdmin, (req, res) => {
-  const { name, number } = req.body;
+  const { rank, name, number, ticket, series, amount, date } = req.body;
 
   if (!name || !number) {
     return res.json({ success: false });
   }
 
   const data = readData();
+
+  // 🔥 SAVE ALL DETAILS
+  data.rank = rank || "";
   data.name = name;
   data.number = number;
+  data.ticket = ticket || "";
+  data.series = series || "";
+  data.amount = amount || "";
+  data.date = date || "";
 
+  // old winner logic (optional)
   if (!data.winners.includes(number)) {
     data.winners.push(number);
   }
@@ -100,12 +117,18 @@ app.post("/api/check", (req, res) => {
   res.json({ winner: data.winners.includes(number) });
 });
 
-// ---------- AUTO-FILL API ----------
+// ---------- AUTO-FILL API (FOR WON PAGE) ----------
 app.get("/api/winner", (req, res) => {
   const data = readData();
+
   res.json({
+    rank: data.rank,
     name: data.name,
-    number: data.number
+    number: data.number,
+    ticket: data.ticket,
+    series: data.series,
+    amount: data.amount,
+    date: data.date
   });
 });
 
