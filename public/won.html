@@ -28,41 +28,34 @@
   }
 
   .winner-text {
-  position: absolute;
-  bottom: 120px;              /* 👈 thoda upar */
-  width: 100%;
-  display: flex;              /* ⭐ */
-  flex-direction: column;     /* ⭐ */
-  align-items: center;        /* ⭐ perfect center */
-  justify-content: center;
-  text-align: center;
-  color: white;
-  gap: 6px;                   /* ⭐ spacing control */
-}
-
+    position: absolute;
+    bottom: 120px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    gap: 6px;
+  }
 
   .winner-text h1 {
     margin: 0;
     font-size: 26px;
   }
 
+  .winner-rank {
+    font-size: 14px;
+    font-weight: bold;
+    color: #ffeb3b;
+  }
+
   .winner-text .number {
-  font-size: 30px;
-  font-weight: bold;
-  letter-spacing: 2px;
-}
-
-
-  .live {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: red;
-  padding: 6px 16px;
-  border-radius: 20px;
-  font-size: 13px;
-}
-
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 2px;
+  }
 
   /* ===== CERTIFICATE SECTION ===== */
   .certificate-section {
@@ -77,20 +70,34 @@
   .cert-name {
     position: absolute;
     top: 430px;
-    left: 26%;
+    left: 50%;
     transform: translateX(-50%);
     font-weight: bold;
     font-size: 18px;
+    white-space: nowrap;
   }
 
   .cert-number {
     position: absolute;
     top: 331px;
-    left: 5%;
+    left: 50%;
     transform: translateX(-50%);
     font-size: 16px;
-    margin-left: 40%;
+    white-space: nowrap;
   }
+
+  .cert-extra {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 14px;
+    white-space: nowrap;
+  }
+
+  .ticket   { top: 360px; }
+  .series   { top: 385px; }
+  .amount   { top: 410px; font-weight: bold; }
+  .date     { top: 455px; }
 </style>
 </head>
 
@@ -104,8 +111,8 @@
 
     <div class="winner-text">
       <h1>🎉 YOU WON 🎉</h1>
-      <!-- 🔝 WINNING NUMBER -->
-      <div  class="number" id="winnerNumber"></div>
+      <div class="winner-rank" id="winnerRank"></div>
+      <div class="number" id="winnerNumber"></div>
     </div>
   </div>
 
@@ -113,27 +120,47 @@
   <div class="certificate-section">
     <img src="img/certificate.png" alt="Certificate">
 
-    <!-- 🔽 CERTIFICATE DETAILS -->
+    <!-- MAIN DETAILS -->
     <div class="cert-name" id="certName"></div>
     <div class="cert-number" id="certNumber"></div>
+
+    <!-- EXTRA DETAILS -->
+    <div class="cert-extra ticket" id="ticketNumber"></div>
+    <div class="cert-extra series" id="seriesCode"></div>
+    <div class="cert-extra amount" id="prizeAmount"></div>
+    <div class="cert-extra date" id="drawDate"></div>
   </div>
 
 </div>
 
-<!-- ===== ONLY TEXT FILL SCRIPT ===== -->
+<!-- ===== AUTO-FILL SCRIPT ===== -->
 <script>
 fetch("/api/winner")
   .then(res => res.json())
-  .then(data => {
-    if (!data) return;
+  .then(d => {
+    if (!d) return;
 
-    // 🔝 top winner number
-    document.getElementById("winnerNumber").innerText = data.number || "";
+    // TOP SECTION
+    document.getElementById("winnerRank").innerText =
+      d.rank ? "★ " + d.rank + " ★" : "";
+    document.getElementById("winnerNumber").innerText = d.number || "";
 
-    // 🔽 certificate name + number
-    document.getElementById("certName").innerText = data.name || "";
+    // CERTIFICATE
+    document.getElementById("certName").innerText = d.name || "";
     document.getElementById("certNumber").innerText =
-      data.number ? "Winning Number : " + data.number : "";
+      d.number ? "Winning Number : " + d.number : "";
+
+    document.getElementById("ticketNumber").innerText =
+      d.ticket ? "Ticket : " + d.ticket : "";
+
+    document.getElementById("seriesCode").innerText =
+      d.series ? "Series : " + d.series : "";
+
+    document.getElementById("prizeAmount").innerText =
+      d.amount ? "Prize : " + d.amount : "";
+
+    document.getElementById("drawDate").innerText =
+      d.date ? "Draw Date : " + d.date : "";
   })
   .catch(err => console.log(err));
 </script>
