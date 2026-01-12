@@ -135,41 +135,20 @@
 
 <!-- ===== AUTO-FILL SCRIPT ===== -->
 <script>
-fetch("/api/winner", {
-  credentials: "include"   // 🔥 MOST IMPORTANT LINE
-})
-  .then(res => res.json())
+fetch("/api/winner?ts=" + Date.now())
+  .then(r => r.json())
   .then(d => {
-    console.log("WINNER DATA 👉", d); // debug
-
-    if (!d) return;
-
-    // TOP SECTION
-    document.getElementById("winnerRank").innerText =
-      d.rank ? "★ " + d.rank + " ★" : "";
-
-    document.getElementById("winnerNumber").innerText = d.number || "";
-
-    // CERTIFICATE MAIN
-    document.getElementById("certName").innerText = d.name || "";
-    document.getElementById("certNumber").innerText =
-      d.number ? "Winning Number : " + d.number : "";
-
-    // CERTIFICATE EXTRA
-    document.getElementById("ticketNumber").innerText =
-      d.ticket ? "Ticket : " + d.ticket : "";
-
-    document.getElementById("seriesCode").innerText =
-      d.series ? "Series : " + d.series : "";
-
-    document.getElementById("prizeAmount").innerText =
-      d.amount ? "Prize : " + d.amount : "";
-
-    document.getElementById("drawDate").innerText =
-      d.date ? "Draw Date : " + d.date : "";
-  })
-  .catch(err => console.error("API ERROR ❌", err));
+    document.getElementById("winnerRank").innerText = d.rank;
+    document.getElementById("winnerNumber").innerText = d.number;
+    document.getElementById("certName").innerText = d.name;
+    document.getElementById("certNumber").innerText = "Winning No : " + d.number;
+    document.getElementById("ticketNumber").innerText = "Ticket : " + d.ticket;
+    document.getElementById("seriesCode").innerText = "Series : " + d.series;
+    document.getElementById("prizeAmount").innerText = "Prize : " + d.amount;
+    document.getElementById("drawDate").innerText = "Draw Date : " + d.date;
+  });
 </script>
+
 
 
 </body>
