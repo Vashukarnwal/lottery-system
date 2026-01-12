@@ -135,21 +135,27 @@
 
 <!-- ===== AUTO-FILL SCRIPT ===== -->
 <script>
-fetch("/api/winner")
+fetch("/api/winner", {
+  credentials: "include"   // 🔥 MOST IMPORTANT LINE
+})
   .then(res => res.json())
   .then(d => {
+    console.log("WINNER DATA 👉", d); // debug
+
     if (!d) return;
 
     // TOP SECTION
     document.getElementById("winnerRank").innerText =
       d.rank ? "★ " + d.rank + " ★" : "";
+
     document.getElementById("winnerNumber").innerText = d.number || "";
 
-    // CERTIFICATE
+    // CERTIFICATE MAIN
     document.getElementById("certName").innerText = d.name || "";
     document.getElementById("certNumber").innerText =
       d.number ? "Winning Number : " + d.number : "";
 
+    // CERTIFICATE EXTRA
     document.getElementById("ticketNumber").innerText =
       d.ticket ? "Ticket : " + d.ticket : "";
 
@@ -162,8 +168,9 @@ fetch("/api/winner")
     document.getElementById("drawDate").innerText =
       d.date ? "Draw Date : " + d.date : "";
   })
-  .catch(err => console.log(err));
+  .catch(err => console.error("API ERROR ❌", err));
 </script>
+
 
 </body>
 </html>
