@@ -109,14 +109,6 @@ app.post("/api/add-winner", isAdmin, (req, res) => {
   res.json({ success: true });
 });
 
-  // old winner logic (optional)
-  if (!data.winners.includes(number)) {
-    data.winners.push(number);
-  }
-
-  writeData(data);
-  res.json({ success: true });
-});
 
 // ---------- USER : CHECK RESULT ----------
 app.post("/api/check", (req, res) => {
@@ -157,3 +149,4 @@ const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log("🚀 Server running on port", PORT);
 });
+  
